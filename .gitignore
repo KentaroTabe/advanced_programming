@@ -419,3 +419,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+report
+
+report/
+report_sample_md
