@@ -10,7 +10,7 @@ for image in $1/test/*.ppm; do
 #   convert -blur 2x6 "${image}" "${name}"
   convert -median 3 "${image}" "${name}"
 #   convert -auto-level "${image}" "${name}"
-#   convert -equalize "${image}" "${name}"
+  convert -equalize "${image}" "${name}"
     rotation=0
     echo $bname:
     for template in $1/*.ppm; do
