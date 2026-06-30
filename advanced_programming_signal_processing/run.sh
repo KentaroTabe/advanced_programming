@@ -6,12 +6,12 @@ for image in $1/test/*.ppm; do
     name="imgproc/"$bname
     x=0    	#
     echo $name
-    # convert "${image}" "${name}"  # 何もしない画像処理
+    magick "${image}" "${name}"  # 何もしない画像処理
 #   convert -blur 2x6 "${image}" "${name}"
 #   convert -median 3 "${image}" "${name}"
 #   convert -auto-level "${image}" "${name}"
 #   convert -equalize "${image}" "${name}"
-    convert "${image}" -median 3 -equalize "${name}"
+    # magick "${image}" -statistic Median 3 -equalize -colorspace gray "${name}"
     rotation=0
     echo $bname:
     for template in $1/*.ppm; do
@@ -22,7 +22,7 @@ for image in $1/test/*.ppm; do
             rot_template="imgproc/${tname}"
             
             # convertの -rotate オプションでテンプレートを回転
-            convert "${template}" -rotate $rotation "${rot_template}"
+            magick "${template}" -rotate $rotation "${rot_template}"
             
             if [ $x = 0 ]
             then
