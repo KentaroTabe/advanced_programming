@@ -8,20 +8,29 @@ for image in $1/test/*.ppm; do
     echo $name
     # convert "${image}" "${name}"  # 何もしない画像処理
 #   convert -blur 2x6 "${image}" "${name}"
-  convert -median 3 "${image}" "${name}"
+#   convert -median 3 "${image}" "${name}"
 #   convert -auto-level "${image}" "${name}"
-  convert -equalize "${image}" "${name}"
+#   convert -equalize "${image}" "${name}"
+    convert "${image}" -median 3 -equalize "${name}"
     rotation=0
     echo $bname:
     for template in $1/*.ppm; do
 	echo `basename ${template}`
-	if [ $x = 0 ]
-	then
-	    ./matching $name "${template}" $rotation 1.5 cp 
-	    x=1
-	else
-	    ./matching $name "${template}" $rotation 1.5 p 
-	fi
+        for rotation in 0 90 180 270; do
+            # 回転させたテンプレートの一時保存先
+            rot_template="imgproc/tmp_rot_template.ppm"
+            
+            # convertの -rotate オプションでテンプレートを回転
+            convert "${template}" -rotate $rotation "${rot_template}"
+            
+            if [ $x = 0 ]
+            then
+                ./matching $name "${rot_template}" $rotation 1.5 cp 
+                x=1
+            else
+                ./matching $name "${rot_template}" $rotation 1.5 p 
+            fi
+        done
     done
     echo ""
 done
