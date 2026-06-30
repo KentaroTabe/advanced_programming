@@ -15,10 +15,11 @@ for image in $1/test/*.ppm; do
     rotation=0
     echo $bname:
     for template in $1/*.ppm; do
-	echo `basename ${template}`
+        tname=`basename "${template}"`
+	    echo $tname
         for rotation in 0 90 180 270; do
             # 回転させたテンプレートの一時保存先
-            rot_template="imgproc/tmp_rot_template.ppm"
+            rot_template="imgproc/${tname}"
             
             # convertの -rotate オプションでテンプレートを回転
             convert "${template}" -rotate $rotation "${rot_template}"
