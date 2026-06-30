@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <math.h>
 //#include <omp.h>
 
 void templateMatchingGray(Image *src, Image *template, Point *position, double *distance)
@@ -130,14 +131,13 @@ int main(int argc, char **argv)
 
 	if (argc == 6)
 	{
-		char *p = NULL;
-		if (p = strchr(argv[5], 'c') != NULL)
+		if (strchr(argv[5], 'c') != NULL)
 			clearResult(output_name_txt);
-		if (p = strchr(argv[5], 'w') != NULL)
+		if (strchr(argv[5], 'w') != NULL)
 			isWriteImageResult = 1;
-		if (p = strchr(argv[5], 'p') != NULL)
+		if (strchr(argv[5], 'p') != NULL)
 			isPrintResult = 1;
-		if (p = strchr(argv[5], 'g') != NULL)
+		if (strchr(argv[5], 'g') != NULL)
 			isGray = 1;
 	}
 
