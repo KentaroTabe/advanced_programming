@@ -27,7 +27,7 @@ for image in $1/final/*.ppm; do
                 final_template="imgproc/rot${rotation}_scale${size}_${tname}"
                 
                 if [ "$size" -lt 100 ]; then
-                    threshold=0.1
+                    threshold=0.245
                     magick "${template}" -rotate $rotation -fuzz 5% -fill black -opaque black -statistic Median 2 -scale "${size_str}" "${final_template}"
                 
                 elif [ "$size" -eq 100 ]; then
