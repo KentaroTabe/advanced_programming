@@ -1,7 +1,7 @@
 #!/bin/sh
 # imagemagickで何か画像処理をして，/imgprocにかきこみ，テンプレートマッチング
 # 最終テスト時は、直下の for を for image in $1/final/*.ppm; do に変更してください
-for image in $1/test/*.ppm; do
+for image in $1/final/*.ppm; do
     bname=$(basename "${image}")
     name="imgproc/${bname}"
     x=0
@@ -27,15 +27,15 @@ for image in $1/test/*.ppm; do
                 final_template="imgproc/rot${rotation}_scale${size}_${tname}"
                 
                 if [ "$size" -lt 100 ]; then
-                    threshold=1.6
+                    threshold=0.1
                     magick "${template}" -rotate $rotation -fuzz 5% -fill black -opaque black -statistic Median 2 -scale "${size_str}" "${final_template}"
                 
                 elif [ "$size" -eq 100 ]; then
-                    threshold=0.8
+                    threshold=0.2
                     magick "${template}" -rotate $rotation -fuzz 5% -fill black -opaque black -scale "${size_str}" "${final_template}"
                 
                 else
-                    threshold=0.3
+                    threshold=0.1
                     magick "${template}" -rotate $rotation -fuzz 5% -fill black -opaque black -scale "${size_str}" "${final_template}"
                 fi
 
@@ -56,7 +56,11 @@ for image in $1/test/*.ppm; do
                 # 出力文字列に "[Found" が含まれているか判定
                 if echo "$OUTPUT" | grep -q "\[Found"; then
                     echo "マッチしたため、この画像に対する以降の探索をスキップします。"
-                    # 3階層のループ（size, rotation, template）を抜けて次の image へ
+                    txt_file="result/${bname%.ppm}.txt"
+                    if [ -f "$txt_file" ]; then
+                        # awkを使って1番目から6番目までの値のみを出力（7番目を無視）
+                        awk '{printf "%s %s %s %s %s %s\n", $1, $2, $3, $4, $5, $6}' "$txt_file" > "${txt_file}.tmp" && mv "${txt_file}.tmp" "$txt_file"
+                    fi
                     break 3
                 fi
             done
